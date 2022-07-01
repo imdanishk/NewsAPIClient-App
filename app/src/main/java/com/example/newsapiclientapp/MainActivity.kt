@@ -9,8 +9,10 @@ import com.example.newsapiclientapp.databinding.ActivityMainBinding
 import com.example.newsapiclientapp.presentation.adapter.NewsAdapter
 import com.example.newsapiclientapp.presentation.viewmodel.NewsViewModel
 import com.example.newsapiclientapp.presentation.viewmodel.NewsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var factory: NewsViewModelFactory

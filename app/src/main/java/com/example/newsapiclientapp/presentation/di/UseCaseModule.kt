@@ -5,10 +5,11 @@ import com.example.newsapiclientapp.domain.usecase.GetNewsHeadlinesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(Singleton::class)
+@InstallIn(SingletonComponent::class)
 class UseCaseModule {
    @Singleton
    @Provides
