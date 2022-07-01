@@ -12,12 +12,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.newsapiclientapp.data.model.APIResponse
 import com.example.newsapiclientapp.data.util.Resource
 import com.example.newsapiclientapp.domain.usecase.GetNewsHeadlinesUseCase
+import com.example.newsapiclientapp.domain.usecase.GetSearchedNewsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.http.Query
 
 class NewsViewModel(
     private val app: Application,
-    private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase
+    private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
+    private val getSearchedNewsUseCase: GetSearchedNewsUseCase
 ) : AndroidViewModel(app) {
 
     val newsHeadLines: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
@@ -64,6 +67,25 @@ class NewsViewModel(
             }
         }
         return false
+
+    }
+
+    // Search
+    val searchNews: MutableLiveData<Resource<APIResponse>> = MutableLiveData()
+
+    fun getSearchedNews(country: String, searchQuery: String, page: Int) = viewModelScope.launch(Dispatchers.IO) {
+        searchNews.postValue(Resource.Loading())
+        try{
+            if(isNetworkAvailable(app)) {
+                val response = getSearchedNewsUseCase.execute(country, searchQuery, page)
+                searchNews.postValue(response)
+            }else{
+                searchNews.postValue(Resource.Error("Internet is not available"))
+            }
+
+        }catch (e:Exception){
+            searchNews.postValue(Resource.Error(e.message.toString()))
+        }
 
     }
 
